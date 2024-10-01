@@ -71,26 +71,38 @@ printf("\n");
 
 void ajouterContact(struct contact *contacts,int taille,int *n){
  
+ int n_contacts;
+
  if (*n >= taille)
  {
     printf("le tableau et plein\n\n");
  }
  
- getchar();
+ printf("entrer le nombre de contacts a ajouetr : \n");
+ scanf("%d",&n_contacts);
+
+ for (int i = 0; i < n_contacts ; i++)
+ {
+ 
+ printf("contact %d\n",i+1);
+ 
  printf("entrer le nom : \n");
- fgets(contacts[*n].nom,sizeof(contacts[*n].nom),stdin);
- contacts[*n].nom[strcspn(contacts[*n].nom,"\n")] = '\0';
+ getchar();
+ fgets(contacts[i].nom,sizeof(contacts[i].nom),stdin);
+ contacts[i].nom[strcspn(contacts[i].nom,"\n")] = '\0';
 
  printf("entrer le numero de telephone : \n");
- fgets(contacts[*n].num_telephone,sizeof(contacts[*n].num_telephone),stdin);
- contacts[*n].num_telephone[strcspn(contacts[*n].num_telephone,"\n")] = '\0';
+ fgets(contacts[i].num_telephone,sizeof(contacts[i].num_telephone),stdin);
+ contacts[i].num_telephone[strcspn(contacts[i].num_telephone,"\n")] = '\0';
 
  printf("entrer l'email : \n");
- fgets(contacts[*n].email,sizeof(contacts[*n].email),stdin);
- contacts[*n].email[strcspn(contacts[*n].email,"\n")] = '\0';
+ fgets(contacts[i].email,sizeof(contacts[i].email),stdin);
+ contacts[i].email[strcspn(contacts[i].email,"\n")] = '\0';
 
-(*n)++;
-printf("\n\n");
+ (*n)++;
+
+ }
+
 
 }
 
@@ -171,11 +183,11 @@ for (int i = 0; i < *n; i++)
 
 void supprimerContact(struct contact *contacts,int taille,int *n){
  
- char nom_saisi[50];  // Increase size to match the possible name length
+ /*char nom_saisi[50];  // Increase size to match the possible name length
     int found = 0;
 
     getchar();  // Clear any leftover newline character
-    printf("Entrer le nom du contact à supprimer : \n");
+    printf("Entrer le nom du contact a supprimer : \n");
     fgets(nom_saisi, sizeof(nom_saisi), stdin);
     nom_saisi[strcspn(nom_saisi, "\n")] = '\0';  // Remove the newline character
 
@@ -191,7 +203,7 @@ void supprimerContact(struct contact *contacts,int taille,int *n){
             }
 
             (*n)--;  // Reduce the contact count
-            printf("Contact supprimé avec succès\n\n");
+            printf("Contact supprime avec succes\n\n");
             break;  // Exit after deletion
         }
     }
@@ -199,10 +211,8 @@ void supprimerContact(struct contact *contacts,int taille,int *n){
     if (!found) {
         printf("Le contact n'existe pas\n\n");
     }
-    /*char nom_saisi[10];
-    char nom_temp[10];
-    char num_temp[16];
-    char email_temp[30];
+    */
+   char nom_saisi[10];
     getchar();
     printf("entrer le nom du contact a supprimer : \n");
     fgets(nom_saisi,sizeof(nom_saisi),stdin);
@@ -212,25 +222,20 @@ void supprimerContact(struct contact *contacts,int taille,int *n){
     {
         if (strcmp(nom_saisi,contacts[i].nom) == 0)
         {
-        for
-            strcpy(nom_temp,contacts[i].nom);
             strcpy(contacts[i].nom,contacts[i+1].nom);
-
-            strcpy(num_temp,contacts[i].num_telephone);
             strcpy(contacts[i].num_telephone,contacts[i+1].num_telephone);
-            
-            strcpy(email_temp,contacts[i].email);
             strcpy(contacts[i].email,contacts[i+1].email);
+
             (*n)--;
+            printf("contact supprimer avec succes\n");
             break;
-            printf("contact supprimer avec succes\n\n");
+            
         }
-        else printf("le contact n'existe pas");
+        else printf("le contact n'existe pas\n");
         
     }
-    printf("\n\n");
-    */
-
+    printf("\n");
+    
 }
 
 void rechercherContact(struct contact *contacts,int taille,int *n){
@@ -261,5 +266,5 @@ int strtransform(char c){
     {
         return (int)c - 48;
     }
-    else return printf("input invalid");
+    return 0;
 }
