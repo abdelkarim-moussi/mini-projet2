@@ -7,7 +7,7 @@ char nom[10];
 char num_telephone[16];
 char email[30];
 };
-
+void tolowercase(char c[10]);
 int strtransform(char c);
 void ajouterContact(struct contact *contacts,int taille,int *n);
 void modifierContact(struct contact *contacts,int taille,int *n);
@@ -21,7 +21,6 @@ const int taille = 100;
 char choice = 0;
 struct contact contact_tab[taille];
 int nb = 0;
-//struct contact tabcontact[taille];
 
 printf("Gestionaire de contact\n");
 printf("-------------------------\n");
@@ -66,7 +65,6 @@ do
 } while (choice != 6);
 printf("\n");
 
-
 }
 
 void ajouterContact(struct contact *contacts,int taille,int *n){
@@ -75,32 +73,31 @@ void ajouterContact(struct contact *contacts,int taille,int *n){
 
  if (*n >= taille)
  {
-    printf("le tableau et plein\n\n");
+    printf("le tableau et plein!!\n");
  }
  
- printf("entrer le nombre de contacts a ajouetr : \n");
+ printf("entrer le nombre de contacts a ajouter(taille max = %d) : \n",taille-*n);
  scanf("%d",&n_contacts);
-
+ getchar();
  for (int i = 0; i < n_contacts ; i++)
  {
  
- printf("contact %d\n",i+1);
- 
+ printf("contact %d : \n",*n+1);
+
  printf("entrer le nom : \n");
- getchar();
- fgets(contacts[i].nom,sizeof(contacts[i].nom),stdin);
- contacts[i].nom[strcspn(contacts[i].nom,"\n")] = '\0';
+ fgets(contacts[*n].nom,sizeof(contacts[*n].nom),stdin);
+ contacts[*n].nom[strcspn(contacts[*n].nom,"\n")] = '\0';
 
  printf("entrer le numero de telephone : \n");
- fgets(contacts[i].num_telephone,sizeof(contacts[i].num_telephone),stdin);
- contacts[i].num_telephone[strcspn(contacts[i].num_telephone,"\n")] = '\0';
+ fgets(contacts[*n].num_telephone,sizeof(contacts[*n].num_telephone),stdin);
+ contacts[*n].num_telephone[strcspn(contacts[*n].num_telephone,"\n")] = '\0';
 
  printf("entrer l'email : \n");
- fgets(contacts[i].email,sizeof(contacts[i].email),stdin);
- contacts[i].email[strcspn(contacts[i].email,"\n")] = '\0';
+ fgets(contacts[*n].email,sizeof(contacts[*n].email),stdin);
+ contacts[*n].email[strcspn(contacts[*n].email,"\n")] = '\0';
 
  (*n)++;
-
+ 
  }
 
 
@@ -116,7 +113,7 @@ void modifierContact(struct contact *contacts,int taille,int *n){
     printf("entrer le nom de contact : \n");
     fgets(ancien_nom,sizeof(ancien_nom),stdin);
     ancien_nom[strcspn(ancien_nom,"\n")] = '\0';
-
+    
     for (int i = 0; i < *n; i++)
     {
         if (strcmp(ancien_nom,contacts[i].nom) == 0)
@@ -129,7 +126,7 @@ void modifierContact(struct contact *contacts,int taille,int *n){
                 printf("2.changer email\n");
                 printf("3.quiter\n");
                 scanf("%d",&c);
-
+                c = strtransform(c);
                 switch (c)
                 {
                 case 1:
@@ -167,7 +164,7 @@ void afficherContacts(struct contact *contacts,int taille,int *n){
 
 if (*n == 0)
 {
-   printf("auncun contact disponible\n\n");
+   printf("auncun contact disponible\n");
 }
 
 for (int i = 0; i < *n; i++)
@@ -176,7 +173,7 @@ for (int i = 0; i < *n; i++)
     printf("nom : %s \t",contacts[i].nom);
     printf("numero de telephone : %s \t",contacts[i].num_telephone);
     printf("adress email : %s \t",contacts[i].email);
-    printf("\n\n");
+    printf("\n");
 }
 
 }
@@ -240,24 +237,32 @@ void supprimerContact(struct contact *contacts,int taille,int *n){
 
 void rechercherContact(struct contact *contacts,int taille,int *n){
     
+    int found = 0;
     char nom_rechercher [10];
     getchar();
     printf("entrer le nom du contact a rechercher : \n");
     fgets(nom_rechercher,sizeof(nom_rechercher),stdin);
     nom_rechercher[strcspn(nom_rechercher,"\n")] = '\0';
     
-    for (int i = 0; i < *n; i++)
-    {
-        if (strcmp(nom_rechercher,contacts[i].nom) == 0)
-        {
+    tolowercase(nom_rechercher);
+    
+    for (int i = 0; i < *n; i++)  {
+        char nom_lowecase[10];
+        strcpy(nom_lowecase,contacts[i].nom);
+        tolowercase(nom_lowecase);
+        if (strcmp(nom_rechercher,nom_lowecase) == 0)
+        {    
             printf("contact %d :\n",i+1);
             printf("nom : %s \t",contacts[i].nom);
             printf("numero telephone : %s \t",contacts[i].num_telephone);
             printf("email : %s \t",contacts[i].email);
             printf("\n\n");
+            found = 1;
+            break;
         }
         
     }
+    if(!found) printf("ce nom n'existe pas\n");
     
 }
 
@@ -268,3 +273,19 @@ int strtransform(char c){
     }
     return 0;
 }
+
+void tolowercase(char c[10]){
+
+ for (int i = 0; i < 10 && c[i]!='\0'; i++)
+ {
+    if (c[i] >= 'A' && c[i] <= 'Z')
+   {
+    c[i] += 32;
+   }
+   else c[i] = c[i];
+   
+ }
+
+   
+}
+
