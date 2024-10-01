@@ -8,7 +8,7 @@ char num_telephone[16];
 char email[30];
 };
 
-int strtransform(char c,int t);
+int strtransform(char c);
 void ajouterContact(struct contact *contacts,int taille,int *n);
 void modifierContact(struct contact *contacts,int taille,int *n);
 void afficherContacts(struct contact *contacts,int taille,int *n);
@@ -18,8 +18,7 @@ void rechercherContact(struct contact *contacts,int taille,int *n);
 int main(){
 
 const int taille = 100;
-int choice = 0;
-char trans;
+char choice = 0;
 struct contact contact_tab[taille];
 int nb = 0;
 //struct contact tabcontact[taille];
@@ -36,8 +35,8 @@ do
     printf("4.afficher tous les contacts\n");
     printf("5.rechercher un contact\n");
     printf("6.quiter\n");
-    scanf("%c",&trans);
-    choice = strtransform(trans,choice);
+    scanf(" %c",&choice);
+    choice = strtransform(choice);
     
     switch (choice)
     {
@@ -257,7 +256,10 @@ void rechercherContact(struct contact *contacts,int taille,int *n){
     
 }
 
-int strtransform(char c,int t){
-  t = (int)c - 48;
-  return t;
+int strtransform(char c){
+    if (c >= '0' && c <='9')
+    {
+        return (int)c - 48;
+    }
+    else return printf("input invalid");
 }
